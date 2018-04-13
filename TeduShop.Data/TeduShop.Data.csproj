@@ -84,6 +84,18 @@
     <Compile Include="Migrations\201706100812533_add-reference-touser.Designer.cs">
       <DependentUpon>201706100812533_add-reference-touser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804121646452_Update_TblColor.cs" />
+    <Compile Include="Migrations\201804121646452_Update_TblColor.Designer.cs">
+      <DependentUpon>201804121646452_Update_TblColor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804131511015_AddTblSuppliers.cs" />
+    <Compile Include="Migrations\201804131511015_AddTblSuppliers.Designer.cs">
+      <DependentUpon>201804131511015_AddTblSuppliers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804131533377_AddTblLog.cs" />
+    <Compile Include="Migrations\201804131533377_AddTblLog.Designer.cs">
+      <DependentUpon>201804131533377_AddTblLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AnnouncementRepository.cs" />
@@ -146,6 +158,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706100812533_add-reference-touser.resx">
       <DependentUpon>201706100812533_add-reference-touser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804121646452_Update_TblColor.resx">
+      <DependentUpon>201804121646452_Update_TblColor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804131511015_AddTblSuppliers.resx">
+      <DependentUpon>201804131511015_AddTblSuppliers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804131533377_AddTblLog.resx">
+      <DependentUpon>201804131533377_AddTblLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

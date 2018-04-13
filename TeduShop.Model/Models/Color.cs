@@ -18,5 +18,8 @@ namespace TeduShop.Model.Models
 
         [StringLength(250)]
         public string Code { get; set; }
+
+        [StringLength(10)]
+        public string ColorCode { get; set; }
     }
 }
