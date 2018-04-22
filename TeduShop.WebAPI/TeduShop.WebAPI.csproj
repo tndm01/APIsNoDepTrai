@@ -307,6 +307,7 @@
     <Compile Include="Controllers\AppUserController.cs" />
     <Compile Include="Controllers\FunctionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PostCategoryController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
@@ -382,6 +383,7 @@
   <ItemGroup>
     <Folder Include="Reports\" />
     <Folder Include="UploadedFiles\" />
+    <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

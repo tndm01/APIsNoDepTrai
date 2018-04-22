@@ -32,7 +32,7 @@ namespace TeduShop.Service
 
         public IEnumerable<Log> GetAll()
         {
-            throw new NotImplementedException();
+            return _logRepository.GetAll();
         }
 
         public void Save()
