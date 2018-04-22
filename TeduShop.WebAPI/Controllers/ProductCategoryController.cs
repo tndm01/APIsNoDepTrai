@@ -5,8 +5,10 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Script.Serialization;
+using TeduShop.Common.Message;
 using TeduShop.Model.Models;
 using TeduShop.Service;
 using TeduShop.Web.Infrastructure.Core;
@@ -22,11 +24,13 @@ namespace TeduShop.Web.Controllers
         #region Initialize
 
         private IProductCategoryService _productCategoryService;
+        private ILogService _logService;
 
-        public ProductCategoryController(IErrorService errorService, IProductCategoryService productCategoryService)
+        public ProductCategoryController(IErrorService errorService, IProductCategoryService productCategoryService, ILogService logService)
             : base(errorService)
         {
             this._productCategoryService = productCategoryService;
+            _logService = logService;
         }
 
         #endregion Initialize
@@ -112,11 +116,20 @@ namespace TeduShop.Web.Controllers
                 else
                 {
                     var newProductCategory = new ProductCategory();
+                    var identity = (ClaimsIdentity)User.Identity;
+                    IEnumerable<Claim> claims = identity.Claims;
                     newProductCategory.UpdateProductCategory(productCategoryVm);
                     newProductCategory.CreatedDate = DateTime.Now;
                     _productCategoryService.Add(newProductCategory);
                     _productCategoryService.Save();
-
+                    Log log = new Log()
+                    {
+                        AppUserId = claims.FirstOrDefault().Value,
+                        Content = Notification.CREATE_PRODUCTCATEGORY,
+                        Created = DateTime.Now
+                    };
+                    _logService.Create(log);
+                    _logService.Save();
                     var responseData = Mapper.Map<ProductCategory, ProductCategoryViewModel>(newProductCategory);
                     response = request.CreateResponse(HttpStatusCode.Created, responseData);
                 }
@@ -145,10 +158,18 @@ namespace TeduShop.Web.Controllers
                     else
                     {
                         var dbProductCategory = _productCategoryService.GetById(productCategoryVm.ID);
-
+                        var identity = (ClaimsIdentity)User.Identity;
+                        IEnumerable<Claim> claims = identity.Claims;
                         dbProductCategory.UpdateProductCategory(productCategoryVm);
                         dbProductCategory.UpdatedDate = DateTime.Now;
-
+                        Log log = new Log()
+                        {
+                            AppUserId = claims.FirstOrDefault().Value,
+                            Content = Notification.UPDATE_PRODUCTCATEGORY,
+                            Created = DateTime.Now
+                        };
+                        _logService.Create(log);
+                        _logService.Save();
                         _productCategoryService.Update(dbProductCategory);
                         try
                         {
@@ -193,8 +214,17 @@ namespace TeduShop.Web.Controllers
                 else
                 {
                     var oldProductCategory = _productCategoryService.Delete(id);
+                    var identity = (ClaimsIdentity)User.Identity;
+                    IEnumerable<Claim> claims = identity.Claims;
                     _productCategoryService.Save();
-
+                    Log log = new Log()
+                    {
+                        AppUserId = claims.FirstOrDefault().Value,
+                        Content = Notification.DELETE_PRODUCTCATEGORY,
+                        Created = DateTime.Now
+                    };
+                    _logService.Create(log);
+                    _logService.Save();
                     var responseData = Mapper.Map<ProductCategory, ProductCategoryViewModel>(oldProductCategory);
                     response = request.CreateResponse(HttpStatusCode.Created, responseData);
                 }
@@ -218,13 +248,22 @@ namespace TeduShop.Web.Controllers
                 else
                 {
                     var listProductCategory = new JavaScriptSerializer().Deserialize<List<int>>(checkedProductCategories);
+                    var identity = (ClaimsIdentity)User.Identity;
+                    IEnumerable<Claim> claims = identity.Claims;
                     foreach (var item in listProductCategory)
                     {
                         _productCategoryService.Delete(item);
                     }
 
                     _productCategoryService.Save();
-
+                    Log log = new Log()
+                    {
+                        AppUserId = claims.FirstOrDefault().Value,
+                        Content = Notification.DELETE_PRODUCTCATEGORY,
+                        Created = DateTime.Now
+                    };
+                    _logService.Create(log);
+                    _logService.Save();
                     response = request.CreateResponse(HttpStatusCode.OK, listProductCategory.Count);
                 }
 

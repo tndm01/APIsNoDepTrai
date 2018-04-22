@@ -48,6 +48,10 @@ namespace TeduShop.Data
         public DbSet<AnnouncementUser> AnnouncementUsers { set; get; }
         public DbSet<Supplier> Suppliers { set; get; }
         public DbSet<Log> Logs { set; get; }
+        public DbSet<Import> Imports { set; get; }
+        public DbSet<ImportDetail> ImportDetails { set; get; }
+        public DbSet<Export> Exports { set; get; }
+        public DbSet<ExportDetail> ExportDetails { set; get; }
 
         public static TeduShopDbContext Create()
         {

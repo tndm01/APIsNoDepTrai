@@ -66,9 +66,13 @@
     <Compile Include="Models\Color.cs" />
     <Compile Include="Models\ContactDetail.cs" />
     <Compile Include="Models\Error.cs" />
+    <Compile Include="Models\Export.cs" />
+    <Compile Include="Models\ExportDetail.cs" />
     <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\Footer.cs" />
     <Compile Include="Models\Function.cs" />
+    <Compile Include="Models\Import.cs" />
+    <Compile Include="Models\ImportDetail.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />

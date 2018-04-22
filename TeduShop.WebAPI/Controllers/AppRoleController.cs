@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 using TeduShop.Common.Exceptions;
+using TeduShop.Common.Message;
 using TeduShop.Model.Models;
 using TeduShop.Service;
 using TeduShop.Web.App_Start;
@@ -26,10 +28,14 @@ namespace TeduShop.Web.Controllers
     {
         private IPermissionService _permissionService;
         private IFunctionService _functionService;
-        public AppRoleController(IErrorService errorService, IFunctionService functionService, IPermissionService permissionService) : base(errorService)
+        private ILogService _logService;
+        public AppRoleController(IErrorService errorService, IFunctionService functionService, 
+            IPermissionService permissionService,
+            ILogService logService) : base(errorService)
         {
             _functionService = functionService;
             _permissionService = permissionService;
+            _logService = logService;
         }
 
         [Route("getlistpaging")]
@@ -85,7 +91,6 @@ namespace TeduShop.Web.Controllers
             return CreateHttpResponse(request, () =>
             {
                 List<PermissionViewModel> permissions = new List<PermissionViewModel>();
-                PermissionViewModel permissions1 = new PermissionViewModel();
                 HttpResponseMessage response = null;
                 var roles = AppRoleManager.Roles.Where(x => x.Name != "Admin").ToList();
                 var listPermission = _permissionService.GetByFunctionId(functionId).ToList();
@@ -222,10 +227,20 @@ namespace TeduShop.Web.Controllers
             if (ModelState.IsValid)
             {
                 var newAppRole = new AppRole();
+                var identity = (ClaimsIdentity)User.Identity;
+                IEnumerable<Claim> claims = identity.Claims;
                 newAppRole.UpdateApplicationRole(applicationRoleViewModel);
                 try
                 {
                     AppRoleManager.Create(newAppRole);
+                    Log log = new Log()
+                    {
+                        AppUserId = claims.FirstOrDefault().Value,
+                        Content = Notification.CREATE_ROLE,
+                        Created = DateTime.Now
+                    };
+                    _logService.Create(log);
+                    _logService.Save();
                     return request.CreateResponse(HttpStatusCode.OK, applicationRoleViewModel);
                 }
                 catch (NameDuplicatedException dex)
@@ -245,11 +260,21 @@ namespace TeduShop.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                var identity = (ClaimsIdentity)User.Identity;
+                IEnumerable<Claim> claims = identity.Claims;
                 var appRole = AppRoleManager.FindById(applicationRoleViewModel.Id);
                 try
                 {
                     appRole.UpdateApplicationRole(applicationRoleViewModel, "update");
                     AppRoleManager.Update(appRole);
+                    Log log = new Log()
+                    {
+                        AppUserId = claims.FirstOrDefault().Value,
+                        Content = Notification.UPDATE_ROLE,
+                        Created = DateTime.Now
+                    };
+                    _logService.Create(log);
+                    _logService.Save();
                     return request.CreateResponse(HttpStatusCode.OK, appRole);
                 }
                 catch (NameDuplicatedException dex)
@@ -268,8 +293,17 @@ namespace TeduShop.Web.Controllers
         public HttpResponseMessage Delete(HttpRequestMessage request, string id)
         {
             var appRole = AppRoleManager.FindById(id);
-
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
             AppRoleManager.Delete(appRole);
+            Log log = new Log()
+            {
+                AppUserId = claims.FirstOrDefault().Value,
+                Content = Notification.UPDATE_ROLE,
+                Created = DateTime.Now
+            };
+            _logService.Create(log);
+            _logService.Save();
             return request.CreateResponse(HttpStatusCode.OK, id);
         }
     }

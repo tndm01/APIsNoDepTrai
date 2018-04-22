@@ -1,12 +1,18 @@
 ﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using TeduShop.Common.Exceptions;
+using TeduShop.Common.Message;
+using TeduShop.Data.Repositories;
 using TeduShop.Model.Models;
 using TeduShop.Service;
 using TeduShop.Web.App_Start;
@@ -21,10 +27,11 @@ namespace TeduShop.Web.Controllers
     [RoutePrefix("api/appUser")]
     public class AppUserController : ApiControllerBase
     {
-
-        public AppUserController(IErrorService errorService)
+        private ILogService _logService;
+        public AppUserController(IErrorService errorService, ILogService logService)
             : base(errorService)
         {
+            _logService = logService;
         }
 
         [Route("getlistpaging")]
@@ -91,6 +98,8 @@ namespace TeduShop.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                var identity = (ClaimsIdentity)User.Identity;
+                IEnumerable<Claim> claims = identity.Claims;
                 var newAppUser = new AppUser();
                 newAppUser.UpdateUser(applicationUserViewModel);
                 try
@@ -101,7 +110,14 @@ namespace TeduShop.Web.Controllers
                     {
                         var roles = applicationUserViewModel.Roles.ToArray();
                         await AppUserManager.AddToRolesAsync(newAppUser.Id, roles);
-
+                        Log log = new Log()
+                        {
+                            AppUserId = claims.FirstOrDefault().Value,
+                            Content = Notification.CREATE_USER,
+                            Created = DateTime.Now
+                        };
+                        _logService.Create(log);
+                        _logService.Save();
                         return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
                     }
                     else
@@ -128,6 +144,8 @@ namespace TeduShop.Web.Controllers
         [Permission(Action = "Update", Function = "USER")]
         public async Task<HttpResponseMessage> Update(HttpRequestMessage request, AppUserViewModel applicationUserViewModel)
         {
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
             if (ModelState.IsValid)
             {
                 var appUser = await AppUserManager.FindByIdAsync(applicationUserViewModel.Id);
@@ -142,6 +160,14 @@ namespace TeduShop.Web.Controllers
                         var selectedRole = applicationUserViewModel.Roles.ToArray();
 
                         await AppUserManager.AddToRolesAsync(appUser.Id, applicationUserViewModel.Roles.ToArray());
+                        Log log = new Log()
+                        {
+                            AppUserId = claims.FirstOrDefault().Value,
+                            Content = Notification.UPDATE_USER,
+                            Created = DateTime.Now
+                        };
+                        _logService.Create(log);
+                        _logService.Save();
                         return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
                     }
                     else
@@ -164,10 +190,22 @@ namespace TeduShop.Web.Controllers
         //[Authorize(Roles ="DeleteUser")]
         public async Task<HttpResponseMessage> Delete(HttpRequestMessage request, string id)
         {
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
             var appUser = await AppUserManager.FindByIdAsync(id);
             var result = await AppUserManager.DeleteAsync(appUser);
             if (result.Succeeded)
+            {
+                Log log = new Log()
+                {
+                    AppUserId = claims.FirstOrDefault().Value,
+                    Content = Notification.DELETE_USER,
+                    Created = DateTime.Now
+                };
+                _logService.Create(log);
+                _logService.Save();
                 return request.CreateResponse(HttpStatusCode.OK, id);
+            }
             else
                 return request.CreateErrorResponse(HttpStatusCode.OK, string.Join(",", result.Errors));
         }

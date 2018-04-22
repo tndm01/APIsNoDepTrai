@@ -9,6 +9,9 @@ using TeduShop.Service;
 using TeduShop.Web.Infrastructure.Core;
 using TeduShop.Web.Infrastructure.Extensions;
 using TeduShop.Web.Models;
+using System.Linq;
+using System.Security.Claims;
+using TeduShop.Common.Message;
 
 namespace TeduShop.Web.Controllers
 {
@@ -16,11 +19,14 @@ namespace TeduShop.Web.Controllers
     public class ProductQuantityController : ApiControllerBase
     {
         private IProductQuantityService _productQuantityService;
+        private ILogService _logService;
 
         public ProductQuantityController(IProductQuantityService productQuantityService,
-            IErrorService errorService) : base(errorService)
+            IErrorService errorService,
+            ILogService logService) : base(errorService)
         {
             _productQuantityService = productQuantityService;
+            _logService = logService;
         }
 
         [Route("getall")]
@@ -47,6 +53,8 @@ namespace TeduShop.Web.Controllers
             if (ModelState.IsValid)
             {
                 var newQuantity = new ProductQuantity();
+                var identity = (ClaimsIdentity)User.Identity;
+                IEnumerable<Claim> claims = identity.Claims;
                 try
                 {
                     if (_productQuantityService.CheckExist(productQuantityVm.ProductId, productQuantityVm.SizeId, productQuantityVm.ColorId))
@@ -59,6 +67,14 @@ namespace TeduShop.Web.Controllers
 
                         _productQuantityService.Add(newQuantity);
                         _productQuantityService.Save();
+                        Log log = new Log()
+                        {
+                            AppUserId = claims.FirstOrDefault().Value,
+                            Content = Notification.CREATE_PRODUCTQUANTITY,
+                            Created = DateTime.Now
+                        };
+                        _logService.Create(log);
+                        _logService.Save();
                         return request.CreateResponse(HttpStatusCode.OK, productQuantityVm);
                     }
                 }
@@ -77,9 +93,19 @@ namespace TeduShop.Web.Controllers
         [Route("delete")]
         public HttpResponseMessage Delete(HttpRequestMessage request, int productId, int colorId, int sizeId)
         {
+            var newQuantity = new ProductQuantity();
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
             _productQuantityService.Delete(productId,colorId,sizeId);
             _productQuantityService.Save();
-
+            Log log = new Log()
+            {
+                AppUserId = claims.FirstOrDefault().Value,
+                Content = Notification.DELETE_PRODUCTQUANTITY,
+                Created = DateTime.Now
+            };
+            _logService.Create(log);
+            _logService.Save();
             return request.CreateResponse(HttpStatusCode.OK, "Xóa thành công");
         }
 

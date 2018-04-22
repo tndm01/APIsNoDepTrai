@@ -3,12 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using TeduShop.Common.Message;
 using TeduShop.Model.Models;
 using TeduShop.Service;
 using TeduShop.Web.Infrastructure.Core;
 using TeduShop.Web.Infrastructure.Extensions;
 using TeduShop.Web.Models;
+using System.Linq;
 
 namespace TeduShop.Web.Controllers
 {
@@ -16,10 +19,11 @@ namespace TeduShop.Web.Controllers
     public class ProductImageController : ApiControllerBase
     {
         private IProductImageService _productImageService;
-
-        public ProductImageController(IProductImageService productImageService, IErrorService errorService) : base(errorService)
+        private ILogService _logService;
+        public ProductImageController(IProductImageService productImageService, IErrorService errorService, ILogService logService) : base(errorService)
         {
             _productImageService = productImageService;
+            _logService = logService;
         }
 
         [Route("getall")]
@@ -46,12 +50,22 @@ namespace TeduShop.Web.Controllers
             if (ModelState.IsValid)
             {
                 var newImage = new ProductImage();
+                var identity = (ClaimsIdentity)User.Identity;
+                IEnumerable<Claim> claims = identity.Claims;
                 try
                 {
                     newImage.UpdateProductImage(productImageVm);
 
                     _productImageService.Add(newImage);
                     _productImageService.Save();
+                    Log log = new Log()
+                    {
+                        AppUserId = claims.FirstOrDefault().Value,
+                        Content = Notification.CREATE_PRODUCTIMG,
+                        Created = DateTime.Now
+                    };
+                    _logService.Create(log);
+                    _logService.Save();
                     return request.CreateResponse(HttpStatusCode.OK, productImageVm);
                 }
                 catch (Exception dex)
@@ -69,9 +83,18 @@ namespace TeduShop.Web.Controllers
         [Route("delete")]
         public HttpResponseMessage Delete(HttpRequestMessage request, int id)
         {
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
             _productImageService.Delete(id);
             _productImageService.Save();
-
+            Log log = new Log()
+            {
+                AppUserId = claims.FirstOrDefault().Value,
+                Content = Notification.DELETE_PRODUCTIMG,
+                Created = DateTime.Now
+            };
+            _logService.Create(log);
+            _logService.Save();
             return request.CreateResponse(HttpStatusCode.OK, id);
         }
     }
