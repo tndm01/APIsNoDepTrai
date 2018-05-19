@@ -33,6 +33,7 @@ namespace TeduShop.Web.Mappings
                 cfg.CreateMap<OrderDetail, OrderDetailViewModel>();
                 cfg.CreateMap<Announcement, AnnouncementViewModel>();
                 cfg.CreateMap<AnnouncementUser, AnnouncementUserViewModel>();
+                cfg.CreateMap<Unit, UnitViewModel>();
             });
         }
     }

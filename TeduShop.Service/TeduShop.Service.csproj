@@ -75,7 +75,9 @@
     <Compile Include="ProductQuantityService.cs" />
     <Compile Include="ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SizeService.cs" />
     <Compile Include="StatisticService.cs" />
+    <Compile Include="UnitService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeduShop.Common\TeduShop.Common.csproj">

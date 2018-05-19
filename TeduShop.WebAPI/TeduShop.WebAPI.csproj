@@ -315,7 +315,9 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductImageController.cs" />
     <Compile Include="Controllers\ProductQuantityController.cs" />
+    <Compile Include="Controllers\SizeController.cs" />
     <Compile Include="Controllers\StatisticController.cs" />
+    <Compile Include="Controllers\UnitController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -331,6 +333,7 @@
     <Compile Include="Models\Product\ProductImageViewModel.cs" />
     <Compile Include="Models\Product\ProductQuantityViewModel.cs" />
     <Compile Include="Models\Product\SizeViewModel.cs" />
+    <Compile Include="Models\Product\UnitViewModel.cs" />
     <Compile Include="Models\System\ApplicationGroupViewModel.cs" />
     <Compile Include="Models\System\ApplicationRoleViewModel.cs" />
     <Compile Include="Models\System\ApplicationUserViewModel.cs" />
@@ -384,7 +387,8 @@
   <ItemGroup>
     <Folder Include="Reports\" />
     <Folder Include="UploadedFiles\" />
-    <Folder Include="Views\" />
+    <Folder Include="Views\Size\" />
+    <Folder Include="Views\Unit\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

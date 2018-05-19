@@ -190,5 +190,19 @@ namespace TeduShop.Web.Infrastructure.Extensions
             color.ColorCode = colorViewModel.ColorCode;
             color.Name = colorViewModel.Name;
         }
+
+        public static void UpdateSize(this Size size, SizeViewModel sizeViewModel)
+        {
+            size.ID = sizeViewModel.ID;
+            size.Name = sizeViewModel.Name;
+        }
+
+        public static void UpdateUnit(this Unit unit, UnitViewModel unitViewModel)
+        {
+            unit.UnitId = unitViewModel.UnitId;
+            unit.Name = unitViewModel.Name;
+            unit.UnitCode = unitViewModel.UnitCode;
+            unit.Description = unitViewModel.Description;
+        }
     }
 }
