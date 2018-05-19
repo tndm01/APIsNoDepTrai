@@ -111,6 +111,20 @@ namespace TeduShop.Web.Controllers
             });
         }
 
+        #region Search AutoComplete
+        [Route("SearchProductByKey")]
+        [HttpGet]
+        public HttpResponseMessage SearchProductByKey(HttpRequestMessage request, string code)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _productService.SearchProduct(code);
+                var response = request.CreateResponse(HttpStatusCode.OK, model);
+                return response;
+            });
+        }
+        #endregion
+
         [Route("add")]
         [HttpPost]
         public HttpResponseMessage Create(HttpRequestMessage request, ProductViewModel productCategoryVm)
@@ -435,5 +449,6 @@ namespace TeduShop.Web.Controllers
                 return listProduct;
             }
         }
+
     }
 }

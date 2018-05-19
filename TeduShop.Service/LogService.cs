@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TeduShop.Data.Infrastructure;
 using TeduShop.Data.Repositories;
 using TeduShop.Model.Models;
+using TeduShop.Web.Models.Log;
 
 namespace TeduShop.Service
 {
@@ -13,6 +14,7 @@ namespace TeduShop.Service
     {
         Log Create(Log log);
         IEnumerable<Log> GetAll();
+        IEnumerable<LogViewModel> GetAllDataByUserName();
         void Save();
     }
     public class LogService : ILogService
@@ -33,6 +35,11 @@ namespace TeduShop.Service
         public IEnumerable<Log> GetAll()
         {
             return _logRepository.GetAll();
+        }
+
+        public IEnumerable<LogViewModel> GetAllDataByUserName()
+        {
+            return _logRepository.GetDataLogByUserId();
         }
 
         public void Save()

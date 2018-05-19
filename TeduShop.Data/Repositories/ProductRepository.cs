@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TeduShop.Data.Infrastructure;
+using TeduShop.Data.Model;
 using TeduShop.Model.Models;
 
 namespace TeduShop.Data.Repositories
@@ -8,6 +10,8 @@ namespace TeduShop.Data.Repositories
     public interface IProductRepository : IRepository<Product>
     {
         IEnumerable<Product> GetListProductByTag(string tagId, int page, int pageSize, out int totalRow);
+
+        IEnumerable<ProductMappingModel> SearchProduct(string code);
     }
 
     public class ProductRepository : RepositoryBase<Product>, IProductRepository
@@ -26,6 +30,18 @@ namespace TeduShop.Data.Repositories
             totalRow = query.Count();
 
             return query.OrderByDescending(x => x.CreatedDate).Skip((page - 1) * pageSize).Take(pageSize);
+        }
+
+        public IEnumerable<ProductMappingModel> SearchProduct(string code)
+        {
+            var result = (from product in DbContext.Products.AsNoTracking()
+                          where product.Name.ToLower().Contains(code) && product.Name.ToUpper().Contains(code)
+                          select new ProductMappingModel
+                          {
+                              ProductId = product.ID,
+                              Name = product.Name
+                          }).ToList();
+            return result;
         }
     }
 }

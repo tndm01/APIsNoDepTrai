@@ -183,5 +183,12 @@ namespace TeduShop.Web.Infrastructure.Extensions
             appUser.Address = appUserViewModel.Address;
             appUser.Avatar = appUserViewModel.Avatar;
         }
+
+        public static void UpdateColor(this Color color, ColorViewModel colorViewModel)
+        {
+            color.Code = colorViewModel.Code;
+            color.ColorCode = colorViewModel.ColorCode;
+            color.Name = colorViewModel.Name;
+        }
     }
 }

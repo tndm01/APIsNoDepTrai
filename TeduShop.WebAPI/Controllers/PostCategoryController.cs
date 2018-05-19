@@ -29,7 +29,7 @@ namespace TeduShop.Web.Controllers
             return CreateHttpResponse(request, () =>
             {
                 var listCategory = _postCategoryService.GetAll();
-
+                
                 var listPostCategoryVm = Mapper.Map<List<PostCategoryViewModel>>(listCategory);
 
                 HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, listPostCategoryVm);

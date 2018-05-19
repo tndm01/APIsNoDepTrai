@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TeduShop.Common;
 using TeduShop.Data.Infrastructure;
+using TeduShop.Data.Model;
 using TeduShop.Data.Repositories;
 using TeduShop.Model.Models;
 
@@ -49,6 +50,8 @@ namespace TeduShop.Service
         bool SellProduct(int productId, int quantity);
 
         IEnumerable<Tag> GetListProductTag(string searchText);
+
+        IEnumerable<ProductMappingModel> SearchProduct(string code);
 
     }
 
@@ -280,6 +283,12 @@ namespace TeduShop.Service
         public IEnumerable<Tag> GetListProductTag(string searchText)
         {
             return _tagRepository.GetMulti(x => x.Type == CommonConstants.ProductTag && searchText.Contains(x.Name));
+        }
+
+        public IEnumerable<ProductMappingModel> SearchProduct(string code)
+        {
+            var model = _productRepository.SearchProduct(code);
+            return model;
         }
     }
 }
