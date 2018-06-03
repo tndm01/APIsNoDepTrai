@@ -194,5 +194,19 @@ namespace TeduShop.Web.Controllers
                 return response;
             });
         }
+
+        #region Search AutoComplete
+        [Route("SearchUnitByKey")]
+        [HttpGet]
+        public HttpResponseMessage SearchProductByKey(HttpRequestMessage request, string code)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _UnitService.SearchUnits(code);
+                var response = request.CreateResponse(HttpStatusCode.OK, model);
+                return response;
+            });
+        }
+        #endregion
     }
 }

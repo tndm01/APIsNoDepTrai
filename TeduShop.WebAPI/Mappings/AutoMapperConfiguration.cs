@@ -2,6 +2,7 @@
 using TeduShop.Model.Models;
 using TeduShop.Web.Models;
 using TeduShop.Web.Models.Common;
+using TeduShop.Web.Models.Supplier;
 
 namespace TeduShop.Web.Mappings
 {
@@ -34,6 +35,7 @@ namespace TeduShop.Web.Mappings
                 cfg.CreateMap<Announcement, AnnouncementViewModel>();
                 cfg.CreateMap<AnnouncementUser, AnnouncementUserViewModel>();
                 cfg.CreateMap<Unit, UnitViewModel>();
+                cfg.CreateMap<Supplier, SupplierViewModel>();
             });
         }
     }

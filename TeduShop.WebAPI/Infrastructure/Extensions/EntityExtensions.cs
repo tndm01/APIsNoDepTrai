@@ -2,6 +2,7 @@
 using System.Globalization;
 using TeduShop.Model.Models;
 using TeduShop.Web.Models;
+using TeduShop.Web.Models.Supplier;
 
 namespace TeduShop.Web.Infrastructure.Extensions
 {
@@ -203,6 +204,20 @@ namespace TeduShop.Web.Infrastructure.Extensions
             unit.Name = unitViewModel.Name;
             unit.UnitCode = unitViewModel.UnitCode;
             unit.Description = unitViewModel.Description;
+        }
+
+        public static void UpdateSupplier(this Supplier supplier, SupplierViewModel supplierViewModel)
+        {
+            supplier.ID = supplierViewModel.ID;
+            supplier.Name = supplierViewModel.Name;
+            supplier.Mobile = supplierViewModel.Mobile;
+            supplier.Phone = supplierViewModel.Phone;
+            supplier.Note = supplierViewModel.Note;
+            supplier.Tax = supplierViewModel.Tax;
+            supplier.Address = supplierViewModel.Address;
+            supplier.Phone = supplierViewModel.Phone;
+            supplier.Status = supplierViewModel.Status;
+            supplier.Email = supplierViewModel.Email;
         }
     }
 }

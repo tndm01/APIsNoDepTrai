@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TeduShop.Data.Infrastructure;
+using TeduShop.Data.Model;
 using TeduShop.Data.Repositories;
 using TeduShop.Model.Models;
 
@@ -18,6 +20,8 @@ namespace TeduShop.Service
         Size Add(Size Size);
 
         void Update(Size Size);
+
+        IEnumerable<SizeMappingModel> SearchSizes(string code);
     }
 
     public class SizeService : ISizeService
@@ -54,6 +58,11 @@ namespace TeduShop.Service
         public void Save()
         {
             _unitOfWork.Commit();
+        }
+
+        public IEnumerable<SizeMappingModel> SearchSizes(string code)
+        {
+            return _SizeRepository.SearchSizes(code);
         }
 
         public void Update(Size Size)

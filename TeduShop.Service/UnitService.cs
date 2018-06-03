@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TeduShop.Data.Infrastructure;
+using TeduShop.Data.Model;
 using TeduShop.Data.Repositories;
 using TeduShop.Model.Models;
 
@@ -18,6 +20,8 @@ namespace TeduShop.Service
         Unit Add(Unit Unit);
 
         void Update(Unit Unit);
+
+        IEnumerable<UnitMappingModel> SearchUnits(string code);
     }
 
     public class UnitService : IUnitService
@@ -59,6 +63,11 @@ namespace TeduShop.Service
         public void Update(Unit Unit)
         {
             _UnitRepository.Update(Unit);
+        }
+
+        public IEnumerable<UnitMappingModel> SearchUnits(string code)
+        {
+            return _UnitRepository.SearchUnits(code);
         }
     }
 }

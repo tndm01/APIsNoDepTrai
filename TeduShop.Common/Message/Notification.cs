@@ -77,5 +77,12 @@ namespace TeduShop.Common.Message
         public static string CREATE_DVT = "Thêm mới số lượng Dvt";
         public static string UPDATE_DVT = "Chỉnh sửa số lượng Dvt";
         public static string DELETE_DVT = "Xóa số lượng màu Dvt";
+
+        /// <summary>
+        /// Notification Supplier
+        /// </summary>
+        public static string CREATE_SUPPLIER = "Thêm mới số lượng nhà cung cấp";
+        public static string UPDATE_SUPPLIER = "Chỉnh sửa số lượng nhà cung cấp";
+        public static string DELETE_SUPPLIER = "Xóa số lượng màu nhà cung cấp";
     }
 }

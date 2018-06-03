@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TeduShop.Data.Infrastructure;
+using TeduShop.Data.Model;
 using TeduShop.Data.Repositories;
 using TeduShop.Model.Models;
 
@@ -17,6 +18,7 @@ namespace TeduShop.Service
         Color Delete(int id);
         Color Add(Color color);
         void Update(Color color);
+        IEnumerable<ColorMappingModel> SearchColors(string code);
     }
 
     public class ColorService : IColorService
@@ -52,6 +54,11 @@ namespace TeduShop.Service
         public void Save()
         {
             _unitOfWork.Commit();
+        }
+
+        public IEnumerable<ColorMappingModel> SearchColors(string code)
+        {
+            return _colorRepository.SearchColors(code);
         }
 
         public void Update(Color color)

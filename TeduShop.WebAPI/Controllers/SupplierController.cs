@@ -11,27 +11,27 @@ using TeduShop.Model.Models;
 using TeduShop.Service;
 using TeduShop.Web.Infrastructure.Core;
 using TeduShop.Web.Infrastructure.Extensions;
-using TeduShop.Web.Models;
+using TeduShop.Web.Models.Supplier;
 
 namespace TeduShop.Web.Controllers
 {
-    [RoutePrefix("api/color")]
-    public class ColorController : ApiControllerBase
+    [RoutePrefix("api/supplier")]
+    public class SupplierController : ApiControllerBase
     {
         private ILogService _logService;
-        private IColorService _colorService;
+        private ISupplierService _SupplierService;
 
-        public ColorController(IErrorService errorService, ILogService logService, IColorService colorService) : base(errorService)
+        public SupplierController(IErrorService errorService, ILogService logService, ISupplierService SupplierService) : base(errorService)
         {
             _logService = logService;
-            _colorService = colorService;
+            _SupplierService = SupplierService;
         }
 
         #region Create
 
         [Route("add")]
         [HttpPost]
-        public HttpResponseMessage Create(HttpRequestMessage request, ColorViewModel model)
+        public HttpResponseMessage Create(HttpRequestMessage request, SupplierViewModel model)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -42,21 +42,22 @@ namespace TeduShop.Web.Controllers
                 }
                 else
                 {
-                    var newColorModel = new Color();
+                    var newSupplierModel = new Supplier();
                     var identity = (ClaimsIdentity)User.Identity;
                     IEnumerable<Claim> claims = identity.Claims;
-                    newColorModel.UpdateColor(model);
-                    _colorService.Add(newColorModel);
-                    _colorService.Save();
+                    newSupplierModel.UpdateSupplier(model);
+                    newSupplierModel.Created = DateTime.Now;
+                    _SupplierService.Add(newSupplierModel);
+                    _SupplierService.Save();
                     Log log = new Log()
                     {
                         AppUserId = claims.FirstOrDefault().Value,
-                        Content = Notification.CREATE_COLOR,
+                        Content = Notification.CREATE_SUPPLIER,
                         Created = DateTime.Now
                     };
                     _logService.Create(log);
                     _logService.Save();
-                    var responseData = Mapper.Map<Color, ColorViewModel>(newColorModel);
+                    var responseData = Mapper.Map<Supplier, SupplierViewModel>(newSupplierModel);
                     response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 }
                 return response;
@@ -69,28 +70,28 @@ namespace TeduShop.Web.Controllers
 
         [Route("update")]
         [HttpPut]
-        public HttpResponseMessage Update(HttpRequestMessage request, ColorViewModel model)
+        public HttpResponseMessage Update(HttpRequestMessage request, SupplierViewModel model)
         {
             return CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
                 if (ModelState.IsValid)
                 {
-                    var oldColorModel = _colorService.GetById(model.ID);
+                    var oldSupplierModel = _SupplierService.GetById(model.ID);
                     var identity = (ClaimsIdentity)User.Identity;
                     IEnumerable<Claim> claims = identity.Claims;
-                    oldColorModel.UpdateColor(model);
-                    _colorService.Update(oldColorModel);
-                    _colorService.Save();
+                    oldSupplierModel.UpdateSupplier(model);
+                    _SupplierService.Update(oldSupplierModel);
+                    _SupplierService.Save();
                     Log log = new Log()
                     {
                         AppUserId = claims.FirstOrDefault().Value,
-                        Content = Notification.UPDATE_COLOR,
+                        Content = Notification.UPDATE_SUPPLIER,
                         Created = DateTime.Now
                     };
                     _logService.Create(log);
                     _logService.Save();
-                    var responseData = Mapper.Map<Color, ColorViewModel>(oldColorModel);
+                    var responseData = Mapper.Map<Supplier, SupplierViewModel>(oldSupplierModel);
                     response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 }
                 return response;
@@ -110,17 +111,17 @@ namespace TeduShop.Web.Controllers
                 HttpResponseMessage response = null;
                 var identity = (ClaimsIdentity)User.Identity;
                 IEnumerable<Claim> claims = identity.Claims;
-                var oldColor = _colorService.Delete(id);
-                _colorService.Save();
+                var oldSupplier = _SupplierService.Delete(id);
+                _SupplierService.Save();
                 Log log = new Log()
                 {
                     AppUserId = claims.FirstOrDefault().Value,
-                    Content = Notification.DELETE_COLOR,
+                    Content = Notification.UPDATE_SUPPLIER,
                     Created = DateTime.Now
                 };
                 _logService.Create(log);
                 _logService.Save();
-                var responseData = Mapper.Map<Color, ColorViewModel>(oldColor);
+                var responseData = Mapper.Map<Supplier, SupplierViewModel>(oldSupplier);
                 response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 return response;
             });
@@ -138,15 +139,15 @@ namespace TeduShop.Web.Controllers
             {
                 HttpResponseMessage response = null;
                 int totalRow = 0;
-                var model = _colorService.GetAll();
+                var model = _SupplierService.GetAll();
                 if (!string.IsNullOrEmpty(filter))
                 {
-                    model = model.Where(x => x.Name.Contains(filter) || x.ColorCode.Contains(filter));
+                    model = model.Where(x => x.Name.Contains(filter) || x.Name.Contains(filter));
                 }
                 totalRow = model.Count();
                 var query = model.OrderBy(x => x.ID).Skip(page - 1 * pageSize).Take(pageSize).ToList();
-                var responseData = Mapper.Map<List<Color>, List<ColorViewModel>>(query);
-                PaginationSet<ColorViewModel> pagedSet = new PaginationSet<ColorViewModel>()
+                var responseData = Mapper.Map<List<Supplier>, List<SupplierViewModel>>(query);
+                PaginationSet<SupplierViewModel> pagedSet = new PaginationSet<SupplierViewModel>()
                 {
                     PageIndex = page,
                     PageSize = pageSize,
@@ -168,8 +169,8 @@ namespace TeduShop.Web.Controllers
         {
             return CreateHttpResponse(request, () =>
             {
-                var model = _colorService.GetById(id);
-                var responseData = Mapper.Map<Color, ColorViewModel>(model);
+                var model = _SupplierService.GetById(id);
+                var responseData = Mapper.Map<Supplier, SupplierViewModel>(model);
                 var response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 return response;
             });
@@ -178,13 +179,13 @@ namespace TeduShop.Web.Controllers
         #endregion Get by Id
 
         #region Search AutoComplete
-        [Route("SearchColorByKey")]
+        [Route("SearchSupplierByKey")]
         [HttpGet]
         public HttpResponseMessage SearchProductByKey(HttpRequestMessage request, string code)
         {
             return CreateHttpResponse(request, () =>
             {
-                var model = _colorService.SearchColors(code);
+                var model = _SupplierService.SearchSuppliers(code);
                 var response = request.CreateResponse(HttpStatusCode.OK, model);
                 return response;
             });
