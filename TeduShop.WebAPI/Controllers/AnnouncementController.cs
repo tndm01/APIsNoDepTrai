@@ -17,12 +17,14 @@ namespace TeduShop.Web.Controllers
     public class AnnouncementController : ApiControllerBase
     {
         private IAnnouncementService _announcementService;
+        private IErrorService _errorService;
 
         public AnnouncementController(IErrorService errorService,
             IAnnouncementService announcementService)
             : base(errorService)
         {
             _announcementService = announcementService;
+            _errorService = errorService;
         }
         [Route("getTopMyAnnouncement")]
         [HttpGet]
@@ -144,6 +146,21 @@ namespace TeduShop.Web.Controllers
                 return request.CreateResponse(HttpStatusCode.OK, announId);
 
 
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("getError")]
+        public HttpResponseMessage GetAllError(HttpRequestMessage request)
+        {
+            try
+            {
+                var model = _errorService.GetAll();
+                return request.CreateResponse(HttpStatusCode.OK, model);
             }
             catch (Exception ex)
             {

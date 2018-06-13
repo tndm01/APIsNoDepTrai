@@ -113,6 +113,7 @@ namespace TeduShop.Web.Infrastructure.Extensions
             quantity.SizeId = quantityVm.SizeId;
             quantity.Quantity = quantityVm.Quantity;
         }
+
         public static void UpdateOrder(this Order order, OrderViewModel orderVm)
         {
             order.CustomerName = orderVm.CustomerName;
@@ -134,6 +135,7 @@ namespace TeduShop.Web.Infrastructure.Extensions
             image.Path = imageVm.Path;
             image.Caption = imageVm.Caption;
         }
+
         public static void UpdateFunction(this Function function, FunctionViewModel functionVm)
         {
             function.Name = functionVm.Name;
@@ -145,6 +147,7 @@ namespace TeduShop.Web.Infrastructure.Extensions
             function.URL = functionVm.URL;
             function.ID = functionVm.ID;
         }
+
         public static void UpdatePermission(this Permission permission, PermissionViewModel permissionVm)
         {
             permission.RoleId = permissionVm.RoleId;
@@ -218,6 +221,40 @@ namespace TeduShop.Web.Infrastructure.Extensions
             supplier.Phone = supplierViewModel.Phone;
             supplier.Status = supplierViewModel.Status;
             supplier.Email = supplierViewModel.Email;
+        }
+
+        public static void UpdateImport(this Import import, ImportViewModel importViewModel)
+        {
+            import.Code = importViewModel.Code;
+            import.ReferenceCode = importViewModel.ReferenceCode;
+            import.CreatedAt = importViewModel.CreatedAt;
+            import.DayCreatedVoucher = importViewModel.DayCreatedVoucher;
+            import.Reason = importViewModel.Reason;
+            import.Note = importViewModel.Note;
+            import.Total = importViewModel.Total;
+            import.SupplierId = importViewModel.SupplierId;
+            import.SupplierCode = importViewModel.SupplierCode;
+            import.SupplierName = importViewModel.SupplierName;
+            import.UserId = importViewModel.UserId;
+            import.Censorship = importViewModel.Censorship;
+            import.WarehouseCode = importViewModel.WarehouseCode;
+        }
+
+        public static void UpdateImportDetail(this ImportDetail importDetail, ImportDetailModel importDetailModel)
+        {
+            importDetail.ProductId = importDetailModel.ProductId;
+            importDetail.ImportId = importDetailModel.ImportId;
+            importDetail.ProductName = importDetailModel.ProductName;
+            importDetail.Quantity = importDetailModel.Quantity;
+            importDetail.Price = importDetailModel.Price;
+            importDetail.Total = importDetailModel.Total;
+            importDetail.Total = importDetailModel.Total;
+            importDetail.WareHouseId = importDetailModel.WareHouseId;
+            importDetail.ColorCode = importDetailModel.ColorCode;
+            importDetail.SizeCode = importDetailModel.SizeCode;
+            importDetail.ColorId = importDetailModel.ColorId;
+            importDetail.SizeId = importDetailModel.SizeId;
+            importDetail.ComponentCode = importDetailModel.ComponentCode;
         }
     }
 }

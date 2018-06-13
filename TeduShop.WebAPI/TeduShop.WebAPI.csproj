@@ -308,6 +308,7 @@
     <Compile Include="Controllers\ColorController.cs" />
     <Compile Include="Controllers\FunctionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PostCategoryController.cs" />
@@ -330,6 +331,7 @@
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Models\Common\AnnouncementUserViewModel.cs" />
     <Compile Include="Models\Common\AnnouncementViewModel.cs" />
+    <Compile Include="Models\Import\ImportViewModel.cs" />
     <Compile Include="Models\Product\ColorViewModel.cs" />
     <Compile Include="Models\Product\ProductImageViewModel.cs" />
     <Compile Include="Models\Product\ProductQuantityViewModel.cs" />
@@ -389,6 +391,7 @@
   <ItemGroup>
     <Folder Include="Reports\" />
     <Folder Include="UploadedFiles\" />
+    <Folder Include="Views\Import\" />
     <Folder Include="Views\Size\" />
     <Folder Include="Views\Supplier\" />
     <Folder Include="Views\Unit\" />

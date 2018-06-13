@@ -128,6 +128,8 @@
     <Compile Include="Repositories\AnnouncementUserRepository.cs" />
     <Compile Include="Repositories\ColorRepository.cs" />
     <Compile Include="Repositories\ContactDetailRepository.cs" />
+    <Compile Include="Repositories\ImportDetailRepository.cs" />
+    <Compile Include="Repositories\ImportRepository.cs" />
     <Compile Include="Repositories\SupplierRepository.cs" />
     <Compile Include="Repositories\UnitRepository.cs" />
     <Compile Include="Repositories\ErrorRepository.cs" />

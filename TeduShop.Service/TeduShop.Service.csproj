@@ -64,6 +64,8 @@
     <Compile Include="ErrorService.cs" />
     <Compile Include="FeedbackService.cs" />
     <Compile Include="FunctionService.cs" />
+    <Compile Include="ImportDetailService.cs" />
+    <Compile Include="ImportService.cs" />
     <Compile Include="LogService.cs" />
     <Compile Include="OrderService.cs" />
     <Compile Include="PageService.cs" />

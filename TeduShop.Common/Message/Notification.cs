@@ -60,29 +60,36 @@ namespace TeduShop.Common.Message
         /// <summary>
         /// Notification Color
         /// </summary>
-        public static string CREATE_COLOR = "Thêm mới số lượng màu sắc";
-        public static string UPDATE_COLOR = "Chỉnh sửa số lượng màu sắc";
-        public static string DELETE_COLOR = "Xóa số lượng màu sắc";
+        public static string CREATE_COLOR = "Thêm mới màu sắc";
+        public static string UPDATE_COLOR = "Chỉnh sửa màu sắc";
+        public static string DELETE_COLOR = "Xóa màu sắc";
 
         /// <summary>
         /// Notification Size
         /// </summary>
-        public static string CREATE_SIZE = "Thêm mới số lượng Size";
-        public static string UPDATE_SIZE = "Chỉnh sửa số lượng Size";
-        public static string DELETE_SIZE = "Xóa số lượng màu Size";
+        public static string CREATE_SIZE = "Thêm mới Size";
+        public static string UPDATE_SIZE = "Chỉnh sửa Size";
+        public static string DELETE_SIZE = "Xóa màu Size";
 
         /// <summary>
         /// Notification Dvt
         /// </summary>
-        public static string CREATE_DVT = "Thêm mới số lượng Dvt";
-        public static string UPDATE_DVT = "Chỉnh sửa số lượng Dvt";
-        public static string DELETE_DVT = "Xóa số lượng màu Dvt";
+        public static string CREATE_DVT = "Thêm mới Dvt";
+        public static string UPDATE_DVT = "Chỉnh sửa Dvt";
+        public static string DELETE_DVT = "Xóa màu Dvt";
 
         /// <summary>
         /// Notification Supplier
         /// </summary>
-        public static string CREATE_SUPPLIER = "Thêm mới số lượng nhà cung cấp";
-        public static string UPDATE_SUPPLIER = "Chỉnh sửa số lượng nhà cung cấp";
-        public static string DELETE_SUPPLIER = "Xóa số lượng màu nhà cung cấp";
+        public static string CREATE_SUPPLIER = "Thêm mới nhà cung cấp";
+        public static string UPDATE_SUPPLIER = "Chỉnh sửa nhà cung cấp";
+        public static string DELETE_SUPPLIER = "Xóa màu nhà cung cấp";
+
+        /// <summary>
+        /// Notification Supplier
+        /// </summary>
+        public static string CREATE_IMPORT = "Thêm mới phiếu nhập";
+        public static string UPDATE_IMPORT = "Chỉnh sửa phiếu nhập";
+        public static string DELETE_IMPORT = "Xóa số phiếu nhập";
     }
 }
