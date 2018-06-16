@@ -7,5 +7,6 @@
         public string Alias { set; get; }
         public string Content { set; get; }
         public bool Status { set; get; }
+        public string UpdatedBy { get; set; }
     }
 }

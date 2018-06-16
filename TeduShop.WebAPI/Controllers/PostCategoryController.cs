@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using TeduShop.Common.Message;
 using TeduShop.Model.Models;
 using TeduShop.Service;
 using TeduShop.Web.Infrastructure.Core;
@@ -16,11 +20,13 @@ namespace TeduShop.Web.Controllers
     public class PostCategoryController : ApiControllerBase
     {
         private IPostCategoryService _postCategoryService;
+        private ILogService _logService;
 
-        public PostCategoryController(IErrorService errorService, IPostCategoryService postCategoryService) :
+        public PostCategoryController(IErrorService errorService, IPostCategoryService postCategoryService, ILogService logService) :
             base(errorService)
         {
             this._postCategoryService = postCategoryService;
+            this._logService = logService;
         }
 
         [Route("getall")]
@@ -51,10 +57,20 @@ namespace TeduShop.Web.Controllers
                 else
                 {
                     PostCategory newPostCategory = new PostCategory();
+                    var identity = (ClaimsIdentity)User.Identity;
+                    IEnumerable<Claim> claims = identity.Claims;
                     newPostCategory.UpdatePostCategory(postCategoryVm);
 
                     var category = _postCategoryService.Add(newPostCategory);
                     _postCategoryService.Save();
+                    Log log = new Log()
+                    {
+                        AppUserId = claims.FirstOrDefault().Value,
+                        Content = Notification.CREATE_POSTCATEGORY,
+                        Created = DateTime.Now
+                    };
+                    _logService.Create(log);
+                    _logService.Save();
 
                     response = request.CreateResponse(HttpStatusCode.Created, category);
                 }
@@ -75,10 +91,19 @@ namespace TeduShop.Web.Controllers
                 else
                 {
                     var postCategoryDb = _postCategoryService.GetById(postCategoryVm.ID);
+                    var identity = (ClaimsIdentity)User.Identity;
+                    IEnumerable<Claim> claims = identity.Claims;
                     postCategoryDb.UpdatePostCategory(postCategoryVm);
                     _postCategoryService.Update(postCategoryDb);
                     _postCategoryService.Save();
-
+                    Log log = new Log()
+                    {
+                        AppUserId = claims.FirstOrDefault().Value,
+                        Content = Notification.UPDATE_POSTCATEGORY,
+                        Created = DateTime.Now
+                    };
+                    _logService.Create(log);
+                    _logService.Save();
                     response = request.CreateResponse(HttpStatusCode.OK);
                 }
                 return response;
@@ -98,7 +123,16 @@ namespace TeduShop.Web.Controllers
                 {
                     _postCategoryService.Delete(id);
                     _postCategoryService.Save();
-
+                    var identity = (ClaimsIdentity)User.Identity;
+                    IEnumerable<Claim> claims = identity.Claims;
+                    Log log = new Log()
+                    {
+                        AppUserId = claims.FirstOrDefault().Value,
+                        Content = Notification.DELETE_POSTCATEGORY,
+                        Created = DateTime.Now
+                    };
+                    _logService.Create(log);
+                    _logService.Save();
                     response = request.CreateResponse(HttpStatusCode.OK);
                 }
                 return response;

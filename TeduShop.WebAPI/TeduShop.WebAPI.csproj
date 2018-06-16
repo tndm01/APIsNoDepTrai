@@ -311,7 +311,9 @@
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PostCategoryController.cs" />
+    <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductImageController.cs" />
@@ -392,6 +394,7 @@
     <Folder Include="Reports\" />
     <Folder Include="UploadedFiles\" />
     <Folder Include="Views\Import\" />
+    <Folder Include="Views\Post\" />
     <Folder Include="Views\Size\" />
     <Folder Include="Views\Supplier\" />
     <Folder Include="Views\Unit\" />

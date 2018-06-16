@@ -256,5 +256,14 @@ namespace TeduShop.Web.Infrastructure.Extensions
             importDetail.SizeId = importDetailModel.SizeId;
             importDetail.ComponentCode = importDetailModel.ComponentCode;
         }
+
+        public static void UpdatePage(this Page page, PageViewModel pageViewModel)
+        {
+            page.Alias = pageViewModel.Alias;
+            page.Content = pageViewModel.Content;
+            page.UpdatedBy = pageViewModel.UpdatedBy;
+            page.Status = pageViewModel.Status;
+            page.Name = pageViewModel.Name;
+        }
     }
 }
